@@ -15,17 +15,22 @@ sudo npm install -y pm2 -g
 sudo mkdir -p /var/www/server-node
 sudo chown -R $USER:$USER /var/www/server-node
 
-# Copy application files
-cp -r ./* /var/www/server-node/
+# Create dist directory and build the application
+npm run build
+
+# Copy only the dist directory and necessary files
+cp -r dist/* /var/www/server-node/
+cp package.json /var/www/server-node/
+cp package-lock.json /var/www/server-node/
 
 # Navigate to app directory
 cd /var/www/server-node
 
-# Install dependencies
+# Install production dependencies only
 npm install --production
 
 # Start the application with PM2
-pm2 start src/index.js --name "ac-server"
+pm2 start index.js --name "ac-server"
 
 # Save PM2 configuration
 pm2 save

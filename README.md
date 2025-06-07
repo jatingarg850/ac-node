@@ -9,7 +9,12 @@ A Node.js server application that handles HTTP requests and connects to a Postgr
 npm install
 ```
 
-2. Start the server:
+2. Build the application:
+```bash
+npm run build
+```
+
+3. Start the server:
 ```bash
 npm start
 ```
@@ -18,6 +23,25 @@ For development with auto-reload:
 ```bash
 npm run dev
 ```
+
+## Build Process
+
+The application uses a build process to prepare for deployment:
+
+1. Clean the dist directory:
+```bash
+npm run clean
+```
+
+2. Build the application:
+```bash
+npm run build
+```
+
+This will:
+- Create a `dist` directory
+- Copy all source files to `dist`
+- Copy necessary configuration files
 
 ## AWS EC2 Deployment
 
@@ -55,9 +79,19 @@ chmod +x deploy.sh
 The script will:
 - Install Node.js and npm
 - Install PM2 for process management
+- Build the application
 - Set up the application in /var/www/server-node
 - Start the server using PM2
 - Configure PM2 to start on system boot
+
+### CI/CD Configuration
+
+The project includes a `buildspec.yml` file for AWS CodeBuild integration. This configuration:
+- Installs Node.js 18
+- Installs dependencies
+- Builds the application
+- Creates artifacts in the `dist` directory
+- Caches node_modules for faster builds
 
 ### Monitoring and Management
 
