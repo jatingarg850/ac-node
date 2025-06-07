@@ -28,32 +28,37 @@ npm run dev
 
 The application uses a build process to prepare for deployment:
 
-1. Clean the dist directory:
-```bash
-npm run clean
-```
-
-2. Build the application:
+1. Clean and build the application:
 ```bash
 npm run build
 ```
 
 This will:
-- Create a `dist` directory
+- Clean the `dist` directory
+- Create a new `dist` directory
 - Copy all source files to `dist`
-- Copy necessary configuration files
+- Copy package configuration files
 
-## AWS EC2 Deployment
+## AWS Amplify Deployment
 
-### Prerequisites
-1. An AWS account with EC2 access
-2. An EC2 instance running Ubuntu (recommended: t2.micro for testing)
-3. SSH access to your EC2 instance
-4. Security group with the following ports open:
-   - Port 22 (SSH)
-   - Port 3000 (Application)
+The application is configured for deployment with AWS Amplify. The build process is defined in `amplify.yml` and includes:
 
-### Deployment Steps
+### Build Phases
+1. Backend Build:
+   - Install dependencies with `npm ci`
+   - Build the application
+   
+2. Frontend Build:
+   - Install dependencies
+   - Build the application
+
+### Artifacts
+- All built files from the `dist` directory are included
+- Node modules are cached for faster builds
+
+### Manual EC2 Deployment
+
+If you prefer to deploy manually to EC2, follow these steps:
 
 1. Connect to your EC2 instance:
 ```bash
@@ -83,15 +88,6 @@ The script will:
 - Set up the application in /var/www/server-node
 - Start the server using PM2
 - Configure PM2 to start on system boot
-
-### CI/CD Configuration
-
-The project includes a `buildspec.yml` file for AWS CodeBuild integration. This configuration:
-- Installs Node.js 18
-- Installs dependencies
-- Builds the application
-- Creates artifacts in the `dist` directory
-- Caches node_modules for faster builds
 
 ### Monitoring and Management
 
