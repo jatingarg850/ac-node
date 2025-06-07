@@ -2,7 +2,7 @@
 
 A Node.js server application that handles HTTP requests and connects to a PostgreSQL database.
 
-## Setup
+## Local Setup
 
 1. Install dependencies:
 ```bash
@@ -18,6 +18,53 @@ For development with auto-reload:
 ```bash
 npm run dev
 ```
+
+## AWS EC2 Deployment
+
+### Prerequisites
+1. An AWS account with EC2 access
+2. An EC2 instance running Ubuntu (recommended: t2.micro for testing)
+3. SSH access to your EC2 instance
+4. Security group with the following ports open:
+   - Port 22 (SSH)
+   - Port 3000 (Application)
+
+### Deployment Steps
+
+1. Connect to your EC2 instance:
+```bash
+ssh -i your-key.pem ubuntu@your-ec2-ip
+```
+
+2. Clone the repository:
+```bash
+git clone https://github.com/jatingarg850/ac-server-main.git
+cd ac-server-main
+```
+
+3. Make the deployment script executable:
+```bash
+chmod +x deploy.sh
+```
+
+4. Run the deployment script:
+```bash
+./deploy.sh
+```
+
+The script will:
+- Install Node.js and npm
+- Install PM2 for process management
+- Set up the application in /var/www/server-node
+- Start the server using PM2
+- Configure PM2 to start on system boot
+
+### Monitoring and Management
+
+- Check application status: `pm2 status`
+- View logs: `pm2 logs ac-server`
+- Restart application: `pm2 restart ac-server`
+- Stop application: `pm2 stop ac-server`
 
 ## API Endpoints
 
