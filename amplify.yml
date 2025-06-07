@@ -1,17 +1,31 @@
 version: 1
-backend:
-  phases:
-    preBuild:
-      commands:
-        - npm ci
-    build:
-      commands:
-        - npm run build
-  artifacts:
-    baseDirectory: dist
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
-      - .npm/**/* 
+applications:
+  - appRoot: .
+    backend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci
+        build:
+          commands:
+            - npm run build
+        postBuild:
+          commands:
+            - npm start &
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .npm/**/*
+    customHeaders:
+      - pattern: '**/*'
+        headers:
+          - key: 'Access-Control-Allow-Origin'
+            value: '*'
+          - key: 'Access-Control-Allow-Headers'
+            value: '*'
+          - key: 'Access-Control-Allow-Methods'
+            value: '*' 
