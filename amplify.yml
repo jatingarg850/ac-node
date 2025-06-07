@@ -1,6 +1,22 @@
 version: 1
 applications:
   - appRoot: .
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .npm/**/*
     backend:
       phases:
         preBuild:
@@ -11,7 +27,7 @@ applications:
             - npm run build
         postBuild:
           commands:
-            - npm start &
+            - cd dist && node index.js &
       artifacts:
         baseDirectory: dist
         files:

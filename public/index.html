@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AC Service API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .endpoint {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        code {
+            background: #e0e0e0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>AC Service API Documentation</h1>
+    
+    <h2>Available Endpoints</h2>
+    
+    <div class="endpoint">
+        <h3>Users API</h3>
+        <p>GET <code>/api/users</code> - Get all users</p>
+        <p>POST <code>/api/users</code> - Create a new user</p>
+    </div>
+
+    <div class="endpoint">
+        <h3>Service Requests API</h3>
+        <p>GET <code>/api/service-requests</code> - Get all service requests</p>
+        <p>POST <code>/api/service-requests</code> - Create a new service request</p>
+    </div>
+
+    <div class="endpoint">
+        <h3>AC Listings API</h3>
+        <p>GET <code>/api/ac-listings</code> - Get all AC listings</p>
+        <p>POST <code>/api/ac-listings</code> - Create a new AC listing</p>
+    </div>
+
+    <div class="endpoint">
+        <h3>Buyer Inquiries API</h3>
+        <p>GET <code>/api/buyer-inquiries</code> - Get all buyer inquiries</p>
+        <p>POST <code>/api/buyer-inquiries</code> - Create a new buyer inquiry</p>
+    </div>
+
+    <h2>Health Check</h2>
+    <div class="endpoint">
+        <p>GET <code>/health</code> - Check API health status</p>
+        <p>GET <code>/</code> - Root endpoint health check</p>
+    </div>
+
+    <script>
+        // Check API health
+        fetch('/health')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Health Status:', data);
+            })
+            .catch(error => {
+                console.error('API Health Check Failed:', error);
+            });
+    </script>
+</body>
+</html>
