@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./db');
+const db = require('./config/db');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,34 +9,18 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Health check endpoint
-app.get('/', (req, res) => {
-    res.json({ status: 'ok', message: 'Server is running' });
-});
-
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok', message: 'Server is healthy' });
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something broke!' });
-});
-
 // Routes
-
 // Users routes
-app.get('/api/users', async (req, res, next) => {
+app.get('/api/users', async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM users');
         res.json(result.rows);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
-app.post('/api/users', async (req, res, next) => {
+app.post('/api/users', async (req, res) => {
     const { username, email, password, is_admin } = req.body;
     try {
         const result = await db.query(
@@ -44,22 +28,22 @@ app.post('/api/users', async (req, res, next) => {
             [username, email, password, is_admin]
         );
         res.status(201).json(result.rows[0]);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
 // Service Requests routes
-app.get('/api/service-requests', async (req, res, next) => {
+app.get('/api/service-requests', async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM service_requests');
         res.json(result.rows);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
-app.post('/api/service-requests', async (req, res, next) => {
+app.post('/api/service-requests', async (req, res) => {
     const { name, email, phone, service_type, address, preferred_date, message, status } = req.body;
     try {
         const result = await db.query(
@@ -67,22 +51,22 @@ app.post('/api/service-requests', async (req, res, next) => {
             [name, email, phone, service_type, address, preferred_date, message, status]
         );
         res.status(201).json(result.rows[0]);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
 // AC Listings routes
-app.get('/api/ac-listings', async (req, res, next) => {
+app.get('/api/ac-listings', async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM ac_listings');
         res.json(result.rows);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
-app.post('/api/ac-listings', async (req, res, next) => {
+app.post('/api/ac-listings', async (req, res) => {
     const { title, description, brand, manufacturing_year, ac_type, dimensions, no_of_ac, price, photos, status } = req.body;
     try {
         const result = await db.query(
@@ -90,22 +74,22 @@ app.post('/api/ac-listings', async (req, res, next) => {
             [title, description, brand, manufacturing_year, ac_type, dimensions, no_of_ac, price, photos, status]
         );
         res.status(201).json(result.rows[0]);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
 // Buyer Inquiries routes
-app.get('/api/buyer-inquiries', async (req, res, next) => {
+app.get('/api/buyer-inquiries', async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM buyer_inquiries');
         res.json(result.rows);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
-app.post('/api/buyer-inquiries', async (req, res, next) => {
+app.post('/api/buyer-inquiries', async (req, res) => {
     const { ac_listing_id, full_name, email, phone, address, city, state, message, preferred_contact_time, status } = req.body;
     try {
         const result = await db.query(
@@ -113,17 +97,12 @@ app.post('/api/buyer-inquiries', async (req, res, next) => {
             [ac_listing_id, full_name, email, phone, address, city, state, message, preferred_contact_time, status]
         );
         res.status(201).json(result.rows[0]);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
-// 404 handler
-app.use((req, res) => {
-    res.status(404).json({ error: 'Not Found', path: req.path });
-});
-
 // Start server
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 }); 
