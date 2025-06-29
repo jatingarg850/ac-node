@@ -46,11 +46,11 @@ app.post('/api/users', async (req, res) => {
 });
 
 app.put('/api/users/:id', async (req, res) => {
-    const { username, email, password, is_admin } = req.body;
+    const { username, email, password, is_admin, account_type, photo_link } = req.body;
     try {
         const result = await db.query(
-            'UPDATE users SET username = $1, email = $2, password = $3, is_admin = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING *',
-            [username, email, password, is_admin, req.params.id]
+            'UPDATE users SET username = $1, email = $2, password = $3, is_admin = $4, account_type = $5, photo_link = $6, updated_at = CURRENT_TIMESTAMP WHERE id = $7 RETURNING *',
+            [username, email, password, is_admin, account_type, photo_link, req.params.id]
         );
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'User not found' });
@@ -60,6 +60,8 @@ app.put('/api/users/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
 
 app.delete('/api/users/:id', async (req, res) => {
     try {
